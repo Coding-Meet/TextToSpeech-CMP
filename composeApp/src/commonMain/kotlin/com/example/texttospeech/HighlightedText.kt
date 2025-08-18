@@ -1,5 +1,6 @@
 package com.example.texttospeech
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,9 +16,9 @@ fun HighlightedText(
     text: String,
     highlightRange: IntRange,
     modifier: Modifier = Modifier,
-    normalTextColor: Color = Color.Black,
-    highlightColor: Color = Color.Yellow,
-    highlightTextColor: Color = Color.Black
+    normalTextColor: Color = MaterialTheme.colorScheme.onSurface,
+    highlightColor: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
+    highlightTextColor: Color = MaterialTheme.colorScheme.onPrimary
 ) {
     val annotatedString = buildAnnotatedString {
         // Check if we have a valid highlight range
@@ -36,13 +37,14 @@ fun HighlightedText(
                 }
             }
 
-            // Highlighted text
+            // Highlighted text with enhanced styling
             if (safeStart <= safeEnd) {
                 withStyle(
                     SpanStyle(
                         background = highlightColor,
                         color = highlightTextColor,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 0.5.sp
                     )
                 ) {
                     append(text.substring(safeStart, safeEnd + 1))
@@ -67,6 +69,7 @@ fun HighlightedText(
         text = annotatedString,
         modifier = modifier,
         fontSize = 16.sp,
-        lineHeight = 24.sp
+        lineHeight = 28.sp,
+        style = MaterialTheme.typography.bodyLarge
     )
 }
