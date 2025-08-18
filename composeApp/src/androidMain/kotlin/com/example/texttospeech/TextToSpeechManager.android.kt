@@ -5,17 +5,20 @@ import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import java.util.Locale
 
-actual class TextToSpeechManager {
+class AndroidTTSProvider : TTSProvider {
     private var tts: TextToSpeech? = null
     private var context = activityProvider.invoke()
+
     private var isPausedState = false
     private var originalText: String = ""
     private var pausedPosition = 0
     private var resumeOffset = 0
+
+    // Callback blocks
     private var onWordBoundaryCallback: ((Int, Int) -> Unit)? = null
     private var onCompleteCallback: (() -> Unit)? = null
 
-    actual fun initialize(onInitialized: () -> Unit) {
+    override fun initialize(onInitialized: () -> Unit) {
         println("🚀 Android TTS Initialized")
         context?.let { ctx ->
             tts = TextToSpeech(ctx) { status ->
@@ -30,7 +33,7 @@ actual class TextToSpeechManager {
         }
     }
 
-    actual fun speak(
+    override fun speak(
         text: String,
         onWordBoundary: (wordStart: Int, wordEnd: Int) -> Unit,
         onStart: () -> Unit,
@@ -128,7 +131,7 @@ actual class TextToSpeechManager {
         }
     }
 
-    actual fun stop() {
+    override fun stop() {
         println("🛑 Android Stop called")
         tts?.stop()
         isPausedState = false
@@ -139,7 +142,7 @@ actual class TextToSpeechManager {
         println("🔄 All state reset after stop")
     }
 
-    actual fun pause() {
+    override fun pause() {
         println("⏸️ Android Pause called")
         if (tts?.isSpeaking == true) {
             println("📍 Pausing at position: $pausedPosition")
@@ -150,7 +153,7 @@ actual class TextToSpeechManager {
         }
     }
 
-    actual fun resume() {
+    override fun resume() {
         println("▶️ Android Resume called")
         println("📊 Resume state - isPaused: $isPausedState, pausedPos: $pausedPosition, originalText.length: ${originalText.length}")
 
@@ -183,18 +186,18 @@ actual class TextToSpeechManager {
         }
     }
 
-    actual fun isPlaying(): Boolean {
+    override fun isPlaying(): Boolean {
         val playing = tts?.isSpeaking == true && !isPausedState
         println("❓ Android isPlaying: $playing (speaking: ${tts?.isSpeaking}, paused: $isPausedState)")
         return playing
     }
 
-    actual fun isPaused(): Boolean {
+    override fun isPaused(): Boolean {
         println("❓ Android isPaused: $isPausedState")
         return isPausedState
     }
 
-    actual fun release() {
+    override fun release() {
         println("🗑️ Android Release called")
         tts?.shutdown()
         tts = null
@@ -229,4 +232,8 @@ private var activityProvider: () -> Activity? = {
 
 fun setActivityProvider(provider: () -> Activity?) {
     activityProvider = provider
+}
+
+actual fun getTTSProvider(): TTSProvider {
+    return AndroidTTSProvider()
 }

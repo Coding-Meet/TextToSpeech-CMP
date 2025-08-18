@@ -8,7 +8,6 @@ class TTSManagerIOS: ComposeApp.TTSProvider {
     private let synthesizer = AVSpeechSynthesizer()
     private var delegateHandler: TTSSynthesizerDelegate?
 
-    // State variables - same as your Android implementation
     private var isPausedState = false
     private var originalText = ""
     private var pausedPosition = 0
@@ -18,10 +17,6 @@ class TTSManagerIOS: ComposeApp.TTSProvider {
     private var onWordBoundaryCallback: ((KotlinInt, KotlinInt) -> Void)?
     private var onStartCallback: (() -> Void)?
     private var onCompleteCallback: (() -> Void)?
-
-    init() {
-        setupDelegate()
-    }
 
     private func setupDelegate() {
         delegateHandler = TTSSynthesizerDelegate(
@@ -41,10 +36,10 @@ class TTSManagerIOS: ComposeApp.TTSProvider {
         synthesizer.delegate = delegateHandler
     }
 
-    // MARK: - TTSProvider Implementation
-
-    func initialize() {
+    func initialize(onInitialized: @escaping () -> Void) {
         print("🚀 TTS Initialized")
+        setupDelegate()
+        onInitialized()
     }
 
     func speak(
@@ -95,11 +90,9 @@ class TTSManagerIOS: ComposeApp.TTSProvider {
 
     func pause() {
         print("⏸️ Pause called")
-        if synthesizer.isSpeaking {
-            print("📍 Pausing at position: \(pausedPosition)")
-            synthesizer.stopSpeaking(at: .immediate)  // Changed from pauseSpeaking to stopSpeaking
-            isPausedState = true
-        }
+        print("📍 Pausing at position: \(pausedPosition)")
+        synthesizer.stopSpeaking(at: .immediate)  // Changed from pauseSpeaking to stopSpeaking
+        isPausedState = true
     }
 
     func resume() {
@@ -151,8 +144,6 @@ class TTSManagerIOS: ComposeApp.TTSProvider {
         originalText = ""
     }
 
-    // MARK: - Word Boundary Handling
-
     private func handleWordBoundary(start: Int, end: Int) {
         if !isPausedState {
             // Calculate position in original text (same logic as Android)
@@ -196,8 +187,6 @@ class TTSManagerIOS: ComposeApp.TTSProvider {
         }
     }
 
-    // MARK: - Helper Methods
-
     private func getRemainingText() -> String {
         if pausedPosition < originalText.count {
             let wordStartPos = findWordStart(text: originalText, position: pausedPosition)
@@ -232,8 +221,6 @@ class TTSManagerIOS: ComposeApp.TTSProvider {
         return end
     }
 }
-
-// MARK: - Separate Delegate Class (unchanged)
 
 private class TTSSynthesizerDelegate: NSObject, AVSpeechSynthesizerDelegate {
     let onStart: () -> Void

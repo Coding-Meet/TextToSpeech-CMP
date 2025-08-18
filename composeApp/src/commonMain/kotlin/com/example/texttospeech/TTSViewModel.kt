@@ -4,6 +4,7 @@ package com.example.texttospeech
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 
 enum class TTSState {
     IDLE, PLAYING, PAUSED
@@ -19,8 +20,7 @@ class TTSViewModel : ViewModel() {
     private val _isInitialized = MutableStateFlow(false)
     val isInitialized: StateFlow<Boolean> = _isInitialized
 
-    private val ttsManager = TextToSpeechManager()
-    private var currentText: String = ""
+    private val ttsManager = getTTSProvider()
 
     init {
         ttsManager.initialize {
@@ -29,47 +29,64 @@ class TTSViewModel : ViewModel() {
     }
 
     fun speak(text: String) {
-        currentText = text
         // Reset highlight immediately when starting
-        _currentWordRange.value = -1..-1
+        _currentWordRange.update {
+            -1..-1
+        }
 
         ttsManager.speak(
             text = text,
             onWordBoundary = { wordStart, wordEnd ->
-                _currentWordRange.value = wordStart..wordEnd
+                _currentWordRange.update {
+                    wordStart..wordEnd
+                }
             },
             onStart = {
-                _ttsState.value = TTSState.PLAYING
+                _ttsState.update {
+                    TTSState.PLAYING
+                }
             },
             onComplete = {
-                _ttsState.value = TTSState.IDLE
-                _currentWordRange.value = -1..-1
+                _ttsState.update {
+                    TTSState.IDLE
+                }
+                _currentWordRange.update {
+                    -1..-1
+                }
             }
         )
     }
 
     fun stop() {
         ttsManager.stop()
-        _ttsState.value = TTSState.IDLE
-        _currentWordRange.value = -1..-1
+        _ttsState.update {
+            TTSState.IDLE
+        }
+        _currentWordRange.update {
+            -1..-1
+        }
     }
 
     fun pause() {
         if (_ttsState.value == TTSState.PLAYING) {
             ttsManager.pause()
-            _ttsState.value = TTSState.PAUSED
+            _ttsState.update {
+                TTSState.PAUSED
+            }
         }
     }
 
     fun resume() {
         if (_ttsState.value == TTSState.PAUSED) {
             ttsManager.resume()
-            _ttsState.value = TTSState.PLAYING
+            _ttsState.update {
+                TTSState.PLAYING
+            }
         }
     }
 
-    fun isPlaying(): Boolean = _ttsState.value == TTSState.PLAYING
-    fun isPaused(): Boolean = _ttsState.value == TTSState.PAUSED
+    fun isPlaying(): Boolean = ttsManager.isPlaying()
+    fun isPaused(): Boolean = ttsManager.isPaused()
     fun isIdle(): Boolean = _ttsState.value == TTSState.IDLE
 
     fun release() {

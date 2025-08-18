@@ -168,7 +168,7 @@ fun TTSScreen() {
                             itemsIndexed(sampleTexts) { index, text ->
                                 FilterChip(
                                     onClick = {
-                                        if (ttsState == TTSState.IDLE) {
+                                        if (viewModel.isIdle()) {
                                             selectedSampleIndex = index
                                             customText = text
                                         }
@@ -180,7 +180,7 @@ fun TTSScreen() {
                                         )
                                     },
                                     selected = selectedSampleIndex == index,
-                                    enabled = ttsState == TTSState.IDLE,
+                                    enabled = viewModel.isIdle(),
                                     colors = FilterChipDefaults.filterChipColors(
                                         selectedContainerColor = TTSTheme.primaryLight,
                                         selectedLabelColor = TTSTheme.onPrimaryLight
@@ -227,14 +227,14 @@ fun TTSScreen() {
                     OutlinedTextField(
                         value = customText,
                         onValueChange = {
-                            if (ttsState == TTSState.IDLE) {
+                            if (viewModel.isIdle()) {
                                 customText = it
                             }
                         },
                         modifier = Modifier.fillMaxWidth(),
                         minLines = 4,
                         maxLines = 8,
-                        enabled = ttsState == TTSState.IDLE,
+                        enabled = viewModel.isIdle(),
                         placeholder = {
                             Text(
                                 "Enter your text here to convert to speech...",
@@ -373,7 +373,7 @@ fun TTSScreen() {
                                     viewModel.speak(customText)
                                 }
                             },
-                            enabled = isInitialized && ttsState == TTSState.IDLE && customText.isNotBlank(),
+                            enabled = isInitialized && viewModel.isIdle() && customText.isNotBlank(),
                             modifier = Modifier.weight(1f).height(48.dp),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = TTSTheme.primaryLight,
@@ -395,7 +395,7 @@ fun TTSScreen() {
                         // Pause Button
                         Button(
                             onClick = { viewModel.pause() },
-                            enabled = ttsState == TTSState.PLAYING,
+                            enabled = viewModel.isPlaying(),
                             modifier = Modifier.weight(1f).height(48.dp),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = TTSTheme.warningLight,
@@ -422,7 +422,7 @@ fun TTSScreen() {
                         // Resume Button
                         Button(
                             onClick = { viewModel.resume() },
-                            enabled = ttsState == TTSState.PAUSED,
+                            enabled = viewModel.isPaused(),
                             modifier = Modifier.weight(1f).height(48.dp),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = TTSTheme.successLight,
@@ -472,11 +472,11 @@ fun TTSScreen() {
                         // Clear Text Button
                         OutlinedButton(
                             onClick = {
-                                if (ttsState == TTSState.IDLE) {
+                                if (viewModel.isIdle()) {
                                     customText = ""
                                 }
                             },
-                            enabled = ttsState == TTSState.IDLE && customText.isNotEmpty(),
+                            enabled = viewModel.isIdle() && customText.isNotEmpty(),
                             modifier = Modifier.weight(1f).height(44.dp),
                             colors = ButtonDefaults.outlinedButtonColors(
                                 contentColor = TTSTheme.errorLight,
@@ -484,7 +484,7 @@ fun TTSScreen() {
                             ),
                             border = BorderStroke(
                                 2.dp,
-                                if (ttsState == TTSState.IDLE && customText.isNotEmpty()) TTSTheme.errorLight
+                                if (viewModel.isIdle() && customText.isNotEmpty()) TTSTheme.errorLight
                                 else TTSTheme.outlineLight.copy(alpha = 0.5f)
                             )
                         ) {
@@ -500,13 +500,13 @@ fun TTSScreen() {
                         // Random Sample Button
                         OutlinedButton(
                             onClick = {
-                                if (ttsState == TTSState.IDLE) {
+                                if (viewModel.isIdle()) {
                                     val randomIndex = sampleTexts.indices.random()
                                     selectedSampleIndex = randomIndex
                                     customText = sampleTexts[randomIndex]
                                 }
                             },
-                            enabled = ttsState == TTSState.IDLE,
+                            enabled = viewModel.isIdle(),
                             modifier = Modifier.weight(1f).height(44.dp),
                             colors = ButtonDefaults.outlinedButtonColors(
                                 contentColor = TTSTheme.primaryLight,
@@ -514,7 +514,7 @@ fun TTSScreen() {
                             ),
                             border = BorderStroke(
                                 2.dp,
-                                if (ttsState == TTSState.IDLE) TTSTheme.primaryLight
+                                if (viewModel.isIdle()) TTSTheme.primaryLight
                                 else TTSTheme.outlineLight.copy(alpha = 0.5f)
                             )
                         ) {
