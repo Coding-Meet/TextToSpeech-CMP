@@ -102,40 +102,34 @@ fun TTSScreen() {
                         Text(
                             text = "Text-to-Speech",
                             style = MaterialTheme.typography.titleLarge,
-                            color = TTSTheme.onPrimaryLight
+                            color = MaterialTheme.colorScheme.onPrimary
                         )
                         Text(
                             text = "Real-time word highlighting",
                             style = MaterialTheme.typography.bodySmall,
-                            color = TTSTheme.onPrimaryLight.copy(alpha = 0.8f)
+                            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
                         )
                     }
-                },
-                actions = {
+                }, actions = {
                     IconButton(
-                        onClick = { showSettings = !showSettings }
-                    ) {
+                        onClick = { showSettings = !showSettings }) {
                         Icon(
                             if (showSettings) Icons.Default.ExpandLess else Icons.Default.Settings,
                             contentDescription = "Settings",
-                            tint = TTSTheme.onPrimaryLight
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = TTSTheme.primaryLight
+                }, colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary
                 )
             )
         },
-        containerColor = TTSTheme.backgroundLight,
-        contentColor = TTSTheme.onBackgroundLight
+        containerColor = MaterialTheme.colorScheme.background,
+        contentColor = MaterialTheme.colorScheme.onBackground
     ) { paddingValues ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
-                .padding(16.dp),
+            modifier = Modifier.fillMaxSize().padding(paddingValues)
+                .verticalScroll(rememberScrollState()).padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             // Settings Panel
@@ -145,11 +139,9 @@ fun TTSScreen() {
                 exit = slideOutVertically() + fadeOut()
             ) {
                 Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = TTSTheme.secondaryContainerLight
-                    ),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
+                    modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer
+                    ), elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
                 ) {
                     Column(
                         modifier = Modifier.padding(16.dp),
@@ -158,7 +150,7 @@ fun TTSScreen() {
                         Text(
                             "Sample Texts",
                             style = MaterialTheme.typography.titleMedium,
-                            color = TTSTheme.onSecondaryContainerLight,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
                             fontWeight = FontWeight.Bold
                         )
 
@@ -175,15 +167,14 @@ fun TTSScreen() {
                                     },
                                     label = {
                                         Text(
-                                            "Sample ${index + 1}",
-                                            fontWeight = FontWeight.Medium
+                                            "Sample ${index + 1}", fontWeight = FontWeight.Medium
                                         )
                                     },
                                     selected = selectedSampleIndex == index,
                                     enabled = ttsState == TTSState.IDLE,
                                     colors = FilterChipDefaults.filterChipColors(
-                                        selectedContainerColor = TTSTheme.primaryLight,
-                                        selectedLabelColor = TTSTheme.onPrimaryLight
+                                        selectedContainerColor = MaterialTheme.colorScheme.primary,
+                                        selectedLabelColor = MaterialTheme.colorScheme.onPrimary
                                     )
                                 )
                             }
@@ -197,7 +188,7 @@ fun TTSScreen() {
                 modifier = Modifier.fillMaxWidth(),
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = TTSTheme.surfaceLight
+                    containerColor = MaterialTheme.colorScheme.surface
                 )
             ) {
                 Column(
@@ -211,14 +202,14 @@ fun TTSScreen() {
                         Text(
                             "Text to speak:",
                             style = MaterialTheme.typography.titleMedium,
-                            color = TTSTheme.primaryLight,
+                            color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.Bold
                         )
 
                         Text(
                             "${customText.length} characters",
                             style = MaterialTheme.typography.bodySmall,
-                            color = TTSTheme.onSurfaceVariantLight
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
 
@@ -236,13 +227,13 @@ fun TTSScreen() {
                         placeholder = {
                             Text(
                                 "Enter your text here to convert to speech...",
-                                color = TTSTheme.onSurfaceVariantLight.copy(alpha = 0.6f)
+                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
                             )
                         },
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = TTSTheme.primaryLight,
-                            cursorColor = TTSTheme.primaryLight,
-                            disabledBorderColor = TTSTheme.outlineLight.copy(alpha = 0.5f)
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            cursorColor = MaterialTheme.colorScheme.primary,
+                            disabledBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
                         )
                     )
 
@@ -250,7 +241,7 @@ fun TTSScreen() {
                         Text(
                             "Text editing disabled during speech",
                             style = MaterialTheme.typography.bodySmall,
-                            color = TTSTheme.warningLight,
+                            color = Color(0xFFED6C02),
                             modifier = Modifier.padding(top = 8.dp)
                         )
                     }
@@ -259,11 +250,9 @@ fun TTSScreen() {
 
             // Live Text Display
             Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = TTSTheme.surfaceVariantLight
-                ),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant
+                ), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
                 Column(
                     modifier = Modifier.padding(20.dp)
@@ -276,7 +265,7 @@ fun TTSScreen() {
                         Text(
                             "Live Speech:",
                             style = MaterialTheme.typography.titleMedium,
-                            color = TTSTheme.primaryLight,
+                            color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.Bold
                         )
 
@@ -287,19 +276,17 @@ fun TTSScreen() {
                         ) {
                             val (statusColor, statusText, statusIcon) = when (ttsState) {
                                 TTSState.PLAYING -> Triple(
-                                    TTSTheme.successLight,
+                                    Color(0xFF2E7D32),
                                     "Speaking",
                                     Icons.AutoMirrored.Filled.VolumeUp
                                 )
 
                                 TTSState.PAUSED -> Triple(
-                                    TTSTheme.warningLight,
-                                    "Paused",
-                                    Icons.Default.Pause
+                                    Color(0xFFED6C02), "Paused", Icons.Default.Pause
                                 )
 
                                 TTSState.IDLE -> Triple(
-                                    TTSTheme.onSurfaceVariantLight,
+                                    MaterialTheme.colorScheme.onSurfaceVariant,
                                     "Ready",
                                     Icons.AutoMirrored.Filled.VolumeOff
                                 )
@@ -313,9 +300,7 @@ fun TTSScreen() {
                             )
 
                             Box(
-                                modifier = Modifier
-                                    .size(10.dp)
-                                    .background(statusColor, CircleShape)
+                                modifier = Modifier.size(10.dp).background(statusColor, CircleShape)
                             )
 
                             Text(
@@ -333,20 +318,18 @@ fun TTSScreen() {
                         text = customText,
                         highlightRange = currentWordRange,
                         modifier = Modifier.fillMaxWidth(),
-                        normalTextColor = TTSTheme.onSurfaceVariantLight,
-                        highlightColor = TTSTheme.primaryLight.copy(alpha = 0.3f),
-                        highlightTextColor = TTSTheme.primaryLight
+                        normalTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        highlightColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
+                        highlightTextColor = MaterialTheme.colorScheme.primary
                     )
                 }
             }
 
             // Control Buttons
             Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = TTSTheme.surfaceLight
-                ),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                ), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
                 Column(
                     modifier = Modifier.padding(20.dp),
@@ -355,7 +338,7 @@ fun TTSScreen() {
                     Text(
                         "Controls",
                         style = MaterialTheme.typography.titleMedium,
-                        color = TTSTheme.primaryLight,
+                        color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold
                     )
 
@@ -372,10 +355,14 @@ fun TTSScreen() {
                             enabled = isInitialized && ttsState == TTSState.IDLE && customText.isNotBlank(),
                             modifier = Modifier.weight(1f).height(48.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = TTSTheme.primaryLight,
-                                contentColor = TTSTheme.onPrimaryLight,
-                                disabledContainerColor = TTSTheme.outlineLight.copy(alpha = 0.3f),
-                                disabledContentColor = TTSTheme.onSurfaceVariantLight.copy(alpha = 0.5f)
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                contentColor = MaterialTheme.colorScheme.onPrimary,
+                                disabledContainerColor = MaterialTheme.colorScheme.outline.copy(
+                                    alpha = 0.3f
+                                ),
+                                disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                                    alpha = 0.5f
+                                )
                             ),
                             elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
                         ) {
@@ -394,10 +381,14 @@ fun TTSScreen() {
                             enabled = ttsState == TTSState.PLAYING,
                             modifier = Modifier.weight(1f).height(48.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = TTSTheme.warningLight,
+                                containerColor = Color(0xFFED6C02),
                                 contentColor = Color.White,
-                                disabledContainerColor = TTSTheme.outlineLight.copy(alpha = 0.3f),
-                                disabledContentColor = TTSTheme.onSurfaceVariantLight.copy(alpha = 0.5f)
+                                disabledContainerColor = MaterialTheme.colorScheme.outline.copy(
+                                    alpha = 0.3f
+                                ),
+                                disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                                    alpha = 0.5f
+                                )
                             ),
                             elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
                         ) {
@@ -421,10 +412,14 @@ fun TTSScreen() {
                             enabled = viewModel.isPaused(),
                             modifier = Modifier.weight(1f).height(48.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = TTSTheme.successLight,
+                                containerColor = Color(0xFF2E7D32),
                                 contentColor = Color.White,
-                                disabledContainerColor = TTSTheme.outlineLight.copy(alpha = 0.3f),
-                                disabledContentColor = TTSTheme.onSurfaceVariantLight.copy(alpha = 0.5f)
+                                disabledContainerColor = MaterialTheme.colorScheme.outline.copy(
+                                    alpha = 0.3f
+                                ),
+                                disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                                    alpha = 0.5f
+                                )
                             ),
                             elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
                         ) {
@@ -443,10 +438,14 @@ fun TTSScreen() {
                             enabled = ttsState != TTSState.IDLE,
                             modifier = Modifier.weight(1f).height(48.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = TTSTheme.errorLight,
-                                contentColor = TTSTheme.onErrorLight,
-                                disabledContainerColor = TTSTheme.outlineLight.copy(alpha = 0.3f),
-                                disabledContentColor = TTSTheme.onSurfaceVariantLight.copy(alpha = 0.5f)
+                                containerColor = MaterialTheme.colorScheme.error,
+                                contentColor = MaterialTheme.colorScheme.onError,
+                                disabledContainerColor = MaterialTheme.colorScheme.outline.copy(
+                                    alpha = 0.3f
+                                ),
+                                disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                                    alpha = 0.5f
+                                )
                             ),
                             elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
                         ) {
@@ -473,13 +472,15 @@ fun TTSScreen() {
                             enabled = ttsState == TTSState.IDLE && customText.isNotEmpty(),
                             modifier = Modifier.weight(1f).height(44.dp),
                             colors = ButtonDefaults.outlinedButtonColors(
-                                contentColor = TTSTheme.errorLight,
-                                disabledContentColor = TTSTheme.onSurfaceVariantLight.copy(alpha = 0.5f)
+                                contentColor = MaterialTheme.colorScheme.error,
+                                disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                                    alpha = 0.5f
+                                )
                             ),
                             border = BorderStroke(
                                 2.dp,
-                                if (ttsState == TTSState.IDLE && customText.isNotEmpty()) TTSTheme.errorLight
-                                else TTSTheme.outlineLight.copy(alpha = 0.5f)
+                                if (ttsState == TTSState.IDLE && customText.isNotEmpty()) MaterialTheme.colorScheme.error
+                                else MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
                             )
                         ) {
                             Icon(
@@ -501,13 +502,15 @@ fun TTSScreen() {
                             enabled = ttsState == TTSState.IDLE,
                             modifier = Modifier.weight(1f).height(44.dp),
                             colors = ButtonDefaults.outlinedButtonColors(
-                                contentColor = TTSTheme.primaryLight,
-                                disabledContentColor = TTSTheme.onSurfaceVariantLight.copy(alpha = 0.5f)
+                                contentColor = MaterialTheme.colorScheme.primary,
+                                disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                                    alpha = 0.5f
+                                )
                             ),
                             border = BorderStroke(
                                 2.dp,
-                                if (ttsState == TTSState.IDLE) TTSTheme.primaryLight
-                                else TTSTheme.outlineLight.copy(alpha = 0.5f)
+                                if (ttsState == TTSState.IDLE) MaterialTheme.colorScheme.primary
+                                else MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
                             )
                         ) {
                             Icon(
@@ -525,11 +528,9 @@ fun TTSScreen() {
             // Initialization Status
             if (!isInitialized) {
                 Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = TTSTheme.errorContainerLight
-                    ),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                    modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.errorContainer
+                    ), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                 ) {
                     Row(
                         modifier = Modifier.padding(20.dp),
@@ -539,20 +540,20 @@ fun TTSScreen() {
                         CircularProgressIndicator(
                             modifier = Modifier.size(24.dp),
                             strokeWidth = 3.dp,
-                            color = TTSTheme.onErrorContainerLight
+                            color = MaterialTheme.colorScheme.onErrorContainer
                         )
 
                         Column {
                             Text(
                                 "Initializing Text-to-Speech",
                                 style = MaterialTheme.typography.titleSmall,
-                                color = TTSTheme.onErrorContainerLight,
+                                color = MaterialTheme.colorScheme.onErrorContainer,
                                 fontWeight = FontWeight.Bold
                             )
                             Text(
                                 "Please wait while we set up the speech engine...",
                                 style = MaterialTheme.typography.bodySmall,
-                                color = TTSTheme.onErrorContainerLight.copy(alpha = 0.8f)
+                                color = MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.8f)
                             )
                         }
                     }
