@@ -6,6 +6,9 @@ using modern expect/actual patterns.
 
 [![Text-to-Speech with Real-time Highlighting AppPreview](screenshot/tts_android_ios.png)]()
 
+
+https://github.com/user-attachments/assets/3656a3e2-801e-4b7e-85a3-6ac274786336
+
 ## ✨ Features
 
 - Real-time Word Highlighting - Words are highlighted as they're spoken
@@ -28,8 +31,7 @@ using modern expect/actual patterns.
   for [android](https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-multiplatform-create-first-app.html#run-your-application-on-android)
 - For iOS, run the `composeApp` module by selecting the `iosApp` configuration. If you need help
   with the configuration,
-  follow this link
-  for [Ios](https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-multiplatform-create-first-app.html#run-your-application-on-ios)
+  follow this link for [Ios](https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-multiplatform-create-first-app.html#run-your-application-on-ios)
 
 ## ❤ Show your support
 
